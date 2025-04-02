@@ -10,7 +10,6 @@ export function ApiQueries(...models: Type<any>[]) {
     const properties =
       Reflect.getMetadata('swagger/apiModelPropertiesArray', model.prototype) ||
       [];
-    console.log(properties);
     for (const property of properties) {
       const options =
         Reflect.getMetadata(
