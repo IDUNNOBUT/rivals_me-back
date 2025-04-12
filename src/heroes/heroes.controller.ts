@@ -11,17 +11,13 @@ export class HeroesController {
 
   @Post()
   @ApiResponse({ status: HttpStatus.CREATED, type: HeroDto })
-  async addHero(@Body() payload: AddHeroDto) {
-    try {
-      return await this.heroesService.addHero(payload);
-    } catch (e) {
-      return e;
-    }
+  async addHero(@Body() payload: AddHeroDto): Promise<HeroDto> {
+    return await this.heroesService.addHero(payload);
   }
 
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: [HeroDto] })
-  async getHeroes() {
+  async getHeroes(): Promise<HeroDto[]> {
     return await this.heroesService.getHeroes();
   }
 }

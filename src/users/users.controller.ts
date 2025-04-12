@@ -21,11 +21,7 @@ export class UsersController {
   @Get(':id')
   @ApiResponse({ status: HttpStatus.OK, type: UserDto })
   async getUser(@Param('id') id: string): Promise<UserDto> {
-    try {
-      return this.usersService.getUserById(id);
-    } catch (e) {
-      return e;
-    }
+    return this.usersService.getUserById(id);
   }
 
   @Patch()
@@ -34,20 +30,12 @@ export class UsersController {
     @Req() req,
     @Body() payload: UpdateUserDto,
   ): Promise<UserDto> {
-    try {
-      return this.usersService.updateUser(req.user.id, payload);
-    } catch (e) {
-      return e;
-    }
+    return this.usersService.updateUser(req.user.id, payload);
   }
 
   @Delete()
   @ApiResponse({ status: HttpStatus.OK, type: UserDto })
   async deleteUser(@Req() req): Promise<UserDto> {
-    try {
-      return this.usersService.deleteUser(req.user.id);
-    } catch (e) {
-      return e;
-    }
+    return this.usersService.deleteUser(req.user.id);
   }
 }

@@ -11,17 +11,13 @@ export class MapsController {
 
   @Post()
   @ApiResponse({ status: HttpStatus.CREATED, type: MapDto })
-  async addMap(@Body() payload: AddMapDto) {
-    try {
-      return await this.mapService.addMap(payload);
-    } catch (e) {
-      return e;
-    }
+  async addMap(@Body() payload: AddMapDto): Promise<MapDto> {
+    return await this.mapService.addMap(payload);
   }
 
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: [MapDto] })
-  async getMaps() {
+  async getMaps(): Promise<MapDto[]> {
     return await this.mapService.getMaps();
   }
 }
