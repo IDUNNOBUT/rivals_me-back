@@ -20,12 +20,7 @@ export class AuthController {
   async registration(
     @Body() payload: RegistrationDto,
   ): Promise<AuthResponseDto> {
-    try {
-      return await this.authService.registration(payload);
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
+    return await this.authService.registration(payload);
   }
 
   @Public()
@@ -36,11 +31,6 @@ export class AuthController {
     type: AuthResponseDto,
   })
   async login(@Body() payload: LoginDto): Promise<AuthResponseDto> {
-    try {
-      return await this.authService.login(payload);
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
+    return await this.authService.login(payload);
   }
 }
