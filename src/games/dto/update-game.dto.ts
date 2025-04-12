@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateGameDto {
-  @ApiProperty({ required: false })
-  date?: Date;
+  @ApiProperty({ example: '2024-03-20', required: false })
+  date?: string;
   @ApiProperty({ required: false })
   duration?: number;
   @ApiProperty({ required: false })

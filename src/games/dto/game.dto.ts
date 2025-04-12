@@ -15,8 +15,8 @@ export class GameDto {
   id: string;
   @ApiProperty()
   user: string;
-  @ApiProperty()
-  date: Date;
+  @ApiProperty({ example: '2024-03-20' })
+  date: string;
   @ApiProperty()
   duration: number;
   @ApiProperty()
@@ -36,7 +36,7 @@ export class GameDto {
   constructor(game: AggregatedGame) {
     this.id = game._id;
     this.user = game.user;
-    this.date = new Date(game.date);
+    this.date = game.date.toISOString().split('T')[0];
     this.duration = game.duration;
     this.hero = new HeroDto(game.hero);
     this.map = new MapDto(game.map);

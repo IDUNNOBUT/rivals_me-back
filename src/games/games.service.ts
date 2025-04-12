@@ -22,14 +22,18 @@ export class GamesService {
   ) {}
 
   async addGame(user: string, payload: AddGameDto): Promise<GameDto> {
-    payload['user'] = user;
+    const gameData = {
+      ...payload,
+      user,
+      date: new Date(payload.date)
+    };
 
     const [map, hero] = await Promise.all([
       this.mapsService.findMapById(payload.map),
       this.heroesService.findHeroById(payload.hero),
     ]);
 
-    const newGame = await this.gameModel.create(payload);
+    const newGame = await this.gameModel.create(gameData);
 
     return this.convertGameToDTO(newGame);
   }
@@ -39,12 +43,17 @@ export class GamesService {
     game: string,
     updateData: UpdateGameDto,
   ): Promise<GameDto> {
+    const data = { 
+      ...updateData,
+      ...(updateData.date && { date: new Date(updateData.date) })
+    };
+
     const updatedGame = await this.gameModel.findOneAndUpdate(
       {
         _id: game,
         user,
       },
-      { $set: updateData },
+      { $set: data },
       { new: true },
     );
 
