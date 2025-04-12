@@ -6,21 +6,28 @@ import {
   HttpStatus,
   Param,
   Patch,
+  Query,
   Req,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { UserDto } from './dto/user.dto';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get()
+  @ApiResponse({ status: HttpStatus.OK, type: UserDto })
+  async getCurrentUser(@Req() req): Promise<UserDto> {
+    return this.usersService.getUserById(req.user.id);
+  }
+
   @Get(':id')
   @ApiResponse({ status: HttpStatus.OK, type: UserDto })
-  async getUser(@Param('id') id: string): Promise<UserDto> {
+  async getUserById(@Param('id') id: string): Promise<UserDto> {
     return this.usersService.getUserById(id);
   }
 
