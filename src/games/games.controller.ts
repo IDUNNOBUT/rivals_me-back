@@ -35,21 +35,13 @@ export class GamesController {
   @Post()
   @ApiResponse({ status: HttpStatus.CREATED, type: GameDto })
   async addGame(@Req() req, @Body() payload: AddGameDto): Promise<GameDto> {
-    try {
-      return this.gamesService.addGame(req.user.id, payload);
-    } catch (e) {
-      return e;
-    }
+    return this.gamesService.addGame(req.user.id, payload);
   }
 
   @Delete(':id')
   @ApiResponse({ status: HttpStatus.OK, type: GameDto })
   async deleteGame(@Req() req, @Param('id') id: string): Promise<GameDto> {
-    try {
-      return this.gamesService.deleteGame(req.user.id, id);
-    } catch (e) {
-      return e;
-    }
+    return this.gamesService.deleteGame(req.user.id, id);
   }
 
   @Patch(':id')
@@ -59,11 +51,7 @@ export class GamesController {
     @Body() payload: UpdateGameDto,
     @Param('id') id: string,
   ): Promise<GameDto> {
-    try {
-      return this.gamesService.updateGame(req.user.id, id, payload);
-    } catch (e) {
-      return e;
-    }
+    return this.gamesService.updateGame(req.user.id, id, payload);
   }
 
   @Get()
@@ -98,27 +86,19 @@ export class GamesController {
     @Query() query: GameFilterDto & PaginationDto,
     @Query('id') paramId?: string,
   ): Promise<WithPaginationDto<GameDto[]>> {
-    try {
-      const filter = new GameFilterDto(query);
-      const pagination = new PaginationDto(query);
-      return this.gamesService.getGames(
-        paramId || req.user.id,
-        filter,
-        pagination,
-      );
-    } catch (e) {
-      return e;
-    }
+    const filter = new GameFilterDto(query);
+    const pagination = new PaginationDto(query);
+    return this.gamesService.getGames(
+      paramId || req.user.id,
+      filter,
+      pagination,
+    );
   }
 
   @Get('top')
   @ApiResponse({ status: HttpStatus.OK, type: [TopHeroDto] })
   async getTopHeroes(): Promise<TopHeroDto[]> {
-    try {
-      return this.gamesService.getTopHeroes();
-    } catch (e) {
-      return e;
-    }
+    return this.gamesService.getTopHeroes();
   }
 
   @Get('stat')
@@ -133,11 +113,7 @@ export class GamesController {
     @Req() req,
     @Query('id') paramId?: string,
   ): Promise<UserStatDto> {
-    try {
-      return this.gamesService.getUserGameStats(paramId || req.user.id);
-    } catch (e) {
-      return e;
-    }
+    return this.gamesService.getUserGameStats(paramId || req.user.id);
   }
 
   @Get('overall')
@@ -152,10 +128,6 @@ export class GamesController {
     @Req() req,
     @Query('id') paramId?: string,
   ): Promise<UserOverallStatDto> {
-    try {
-      return this.gamesService.getUserOverallStats(paramId || req.user.id);
-    } catch (e) {
-      return e;
-    }
+    return this.gamesService.getUserOverallStats(paramId || req.user.id);
   }
 }
