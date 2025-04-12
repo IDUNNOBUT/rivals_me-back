@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AddGameDto {
-  @ApiProperty()
-  date: Date;
+  @ApiProperty({ example: '2024-03-20' })
+  date: string;
   @ApiProperty()
   duration: number;
   @ApiProperty()
