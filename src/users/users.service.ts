@@ -6,6 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
+import { Game } from '../games/schemas/game.schema';
 import { AddUserDto } from './dto/add-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,7 +14,10 @@ import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Game.name) private gameModel: Model<Game>,
+  ) {}
 
   async addUser(user: AddUserDto): Promise<User> {
     const candidate = await this.userModel.findOne({ email: user.email });
@@ -41,11 +45,17 @@ export class UsersService {
   }
 
   async deleteUser(id: string): Promise<UserDto> {
-    const deletedUser = await this.userModel.findByIdAndDelete(id);
+    const user = await this.userModel.findById(id);
 
-    if (!deletedUser) throw new BadRequestException('Пользователь не найден');
+    if (!user) throw new BadRequestException('Пользователь не найден');
 
-    return new UserDto(deletedUser);
+    const userDto = new UserDto(user);
+    
+    await this.gameModel.deleteMany({ user: id });
+    
+    await this.userModel.findByIdAndDelete(id);
+
+    return userDto;
   }
 
   async getUserById(id: string): Promise<UserDto> {
