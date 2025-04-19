@@ -22,10 +22,15 @@ export class GamesService {
   ) {}
 
   async addGame(user: string, payload: AddGameDto): Promise<GameDto> {
+    const date = new Date(payload.date);
+
+    const now = new Date();
+    date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+
     const gameData = {
       ...payload,
       user,
-      date: new Date(payload.date)
+      date
     };
 
     const [map, hero] = await Promise.all([
