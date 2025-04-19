@@ -63,14 +63,17 @@ export class GamesService {
   }
 
   async deleteGame(user: string, id: string): Promise<GameDto> {
-    const deletedGame = await this.gameModel.findOneAndDelete({
+    const game = await this.gameModel.findOne({
       _id: id,
       user,
     });
 
-    if (!deletedGame) throw new BadRequestException('Игра не найдена');
+    if (!game) throw new BadRequestException('Игра не найдена');
 
-    return this.convertGameToDTO(deletedGame);
+    const gameDto = await this.convertGameToDTO(game);
+    await this.gameModel.findOneAndDelete({ _id: id, user });
+
+    return gameDto;
   }
 
   async getGames(
