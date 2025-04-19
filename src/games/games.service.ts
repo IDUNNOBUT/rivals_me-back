@@ -118,6 +118,7 @@ export class GamesService {
         },
       },
       { $unwind: '$map' },
+      { $sort: { date: -1 } },
     ];
 
     let pages = 1;
@@ -196,18 +197,28 @@ export class GamesService {
       },
       {
         $group: {
-          _id: { $dateToString: { format: '%d-%m-%Y', date: '$date' } },
+          _id: {
+            date: { $dateToString: { format: '%d-%m-%Y', date: '$date' } },
+            sortDate: { $dateToString: { format: '%Y-%m-%d', date: '$date' } }
+          },
           wins: { $sum: { $cond: ['$win', 1, 0] } },
           losses: { $sum: { $cond: ['$win', 0, 1] } },
         },
       },
       {
         $project: {
-          date: '$_id',
+          date: '$_id.date',
+          sortDate: '$_id.sortDate',
           winRatio: { $subtract: ['$wins', '$losses'] },
         },
       },
-      { $sort: { date: 1 } },
+      { $sort: { sortDate: 1 } },
+      {
+        $project: {
+          date: 1,
+          winRatio: 1,
+        },
+      },
     ]);
 
     return {
