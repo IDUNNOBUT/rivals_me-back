@@ -23,9 +23,14 @@ export class GamesService {
 
   async addGame(user: string, payload: AddGameDto): Promise<GameDto> {
     const date = new Date(payload.date);
-
     const now = new Date();
-    date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+    
+    date.setUTCHours(
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds(),
+      now.getUTCMilliseconds()
+    );
 
     const gameData = {
       ...payload,
